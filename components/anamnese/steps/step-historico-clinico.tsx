@@ -10,109 +10,116 @@ import type { AnamneseFormValues } from "@/lib/nutrition/schema"
 export function StepHistoricoClinico() {
   const { register, control, formState } = useFormContext<AnamneseFormValues>()
   const { errors } = formState
+  const e = errors.historicoClinico
 
-  const sexo = useWatch({ control, name: "sexo" })
-  const gestante = useWatch({ control, name: "gestante" })
-  const lactante = useWatch({ control, name: "lactante" })
+  const sexo = useWatch({ control, name: "dadosPessoais.sexo" })
+  const gestante = useWatch({ control, name: "historicoClinico.gestante" })
+  const lactante = useWatch({ control, name: "historicoClinico.lactante" })
 
   return (
     <div className="flex flex-col gap-8">
       <GrupoCampos
         titulo="Condições de saúde"
-        descricao="Nada aqui é obrigatório, mas quanto mais completo, melhor a interpretação dos resultados."
+        descricao="Nada aqui é obrigatório, mas quanto mais completo, mais precisa será a interpretação."
       >
         <Campo
           label="Doenças diagnosticadas"
-          erro={errors.doencasDiagnosticadas?.message}
-          dica="Diabetes, hipertensão, dislipidemia, tireoide, renal, hepática, gastrointestinal, entre outras."
+          erro={e?.doencasDiagnosticadas?.message}
+          dica="Diabetes, hipertensão, dislipidemia, tireoide, renal, hepática, gastrointestinal..."
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("doencasDiagnosticadas")}
+              {...register("historicoClinico.doencasDiagnosticadas")}
               rows={3}
               placeholder="Liste as condições e desde quando"
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Campo
           label="Medicamentos de uso contínuo"
-          erro={errors.medicamentosContinuos?.message}
-          dica="Inclua o nome e a dosagem, quando souber."
+          erro={e?.medicamentosContinuos?.message}
+          dica="Inclua nome e dosagem, quando souber."
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("medicamentosContinuos")}
+              {...register("historicoClinico.medicamentosContinuos")}
               rows={3}
               placeholder="Ex.: Levotiroxina 50 mcg, 1x ao dia"
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Campo
           label="Cirurgias realizadas"
-          erro={errors.cirurgias?.message}
-          dica="Cirurgia bariátrica e procedimentos abdominais alteram absorção de nutrientes."
+          erro={e?.cirurgias?.message}
+          dica="Bariátrica e procedimentos abdominais alteram absorção de nutrientes."
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("cirurgias")}
+              {...register("historicoClinico.cirurgias")}
               rows={2}
               placeholder="Qual cirurgia e em que ano"
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Campo
           label="Alergias ou intolerâncias alimentares"
-          erro={errors.alergiasIntolerancias?.message}
-          dica="Lactose, glúten, proteína do leite, frutos do mar, entre outras."
+          erro={e?.alergiasIntolerancias?.message}
+          dica="Lactose, glúten, proteína do leite, frutos do mar, amendoim..."
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("alergiasIntolerancias")}
+              {...register("historicoClinico.alergiasIntolerancias")}
               rows={2}
               placeholder="Liste as alergias e intolerâncias conhecidas"
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Campo
           label="Histórico familiar de doenças"
-          erro={errors.historicoFamiliar?.message}
+          erro={e?.historicoFamiliar?.message}
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("historicoFamiliar")}
+              {...register("historicoClinico.historicoFamiliar")}
               rows={2}
               placeholder="Diabetes, obesidade, cardiopatias, câncer..."
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Campo
           label="Sintomas gastrointestinais frequentes"
-          erro={errors.sintomasGastrointestinais?.message}
-          dica="Azia, refluxo, constipação, diarreia, distensão abdominal ou gases."
+          erro={e?.sintomasGastrointestinais?.message}
+          dica="Azia, refluxo, constipação, diarreia, distensão ou gases."
         >
           {(props) => (
             <Textarea
               {...props}
-              {...register("sintomasGastrointestinais")}
+              {...register("historicoClinico.sintomasGastrointestinais")}
               rows={2}
               placeholder="Descreva a frequência e os gatilhos percebidos"
+              className="resize-none"
             />
           )}
         </Campo>
 
         <Controller
           control={control}
-          name="temExamesRecentes"
+          name="historicoClinico.temExamesRecentes"
           render={({ field }) => (
             <CampoSimNao
               label="Possui exames laboratoriais recentes?"
@@ -127,11 +134,11 @@ export function StepHistoricoClinico() {
       {sexo === "feminino" ? (
         <GrupoCampos
           titulo="Saúde da mulher"
-          descricao="Estes fatores afetam necessidades energéticas e de micronutrientes."
+          descricao="Estes fatores afetam as necessidades energéticas e de micronutrientes."
         >
           <Controller
             control={control}
-            name="cicloRegular"
+            name="historicoClinico.cicloRegular"
             render={({ field }) => (
               <CampoSimNao
                 label="Ciclo menstrual regular?"
@@ -142,14 +149,11 @@ export function StepHistoricoClinico() {
             )}
           />
 
-          <Campo
-            label="Uso de anticoncepcional"
-            erro={errors.anticoncepcional?.message}
-          >
+          <Campo label="Uso de anticoncepcional" erro={e?.anticoncepcional?.message}>
             {(props) => (
               <Input
                 {...props}
-                {...register("anticoncepcional")}
+                {...register("historicoClinico.anticoncepcional")}
                 placeholder="Qual método, se usa"
               />
             )}
@@ -157,7 +161,7 @@ export function StepHistoricoClinico() {
 
           <Controller
             control={control}
-            name="gestante"
+            name="historicoClinico.gestante"
             render={({ field }) => (
               <CampoSimNao
                 label="Está gestante?"
@@ -170,7 +174,7 @@ export function StepHistoricoClinico() {
 
           <Controller
             control={control}
-            name="lactante"
+            name="historicoClinico.lactante"
             render={({ field }) => (
               <CampoSimNao
                 label="Está amamentando?"
@@ -183,7 +187,7 @@ export function StepHistoricoClinico() {
 
           <Controller
             control={control}
-            name="menopausa"
+            name="historicoClinico.menopausa"
             render={({ field }) => (
               <CampoSimNao
                 label="Está na menopausa?"
@@ -194,7 +198,7 @@ export function StepHistoricoClinico() {
             )}
           />
 
-          {gestante === true || lactante === true ? (
+          {(gestante === true || lactante === true) && (
             <p
               role="status"
               className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-relaxed text-foreground"
@@ -204,7 +208,7 @@ export function StepHistoricoClinico() {
               <strong>não se aplicam</strong> a esses períodos — procure
               acompanhamento nutricional individualizado.
             </p>
-          ) : null}
+          )}
         </GrupoCampos>
       ) : null}
     </div>

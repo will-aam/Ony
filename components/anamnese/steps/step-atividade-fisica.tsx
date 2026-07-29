@@ -8,48 +8,44 @@ import { CampoSimNao } from "../yes-no-field"
 import { RadioCards } from "../option-cards"
 import {
   FATOR_ATIVIDADE,
-  INTENSIDADES,
-  NIVEIS_ATIVIDADE,
-  PERFIS_TRABALHO,
+  INTENSIDADE_OPTIONS,
+  NIVEL_ATIVIDADE_OPTIONS,
+  PERFIL_TRABALHO_OPTIONS,
 } from "@/lib/nutrition/constants"
-import {
-  LABEL_ATIVIDADE,
-  LABEL_INTENSIDADE,
-  LABEL_PERFIL_TRABALHO,
-} from "@/lib/nutrition/labels"
 import type { AnamneseFormValues } from "@/lib/nutrition/schema"
 
-const OPCOES_NIVEL = NIVEIS_ATIVIDADE.map((valor) => ({
-  valor,
-  label: LABEL_ATIVIDADE[valor],
-  descricao: `Fator de atividade ${FATOR_ATIVIDADE[valor].toLocaleString("pt-BR")}`,
+const OPCOES_NIVEL = NIVEL_ATIVIDADE_OPTIONS.map((o) => ({
+  valor: o.value,
+  label: o.label,
+  descricao: `Fator ${FATOR_ATIVIDADE[o.value].toLocaleString("pt-BR")} × TMB`,
 }))
 
-const OPCOES_INTENSIDADE = INTENSIDADES.map((valor) => ({
-  valor,
-  label: LABEL_INTENSIDADE[valor],
+const OPCOES_INTENSIDADE = INTENSIDADE_OPTIONS.map((o) => ({
+  valor: o.value,
+  label: o.label,
 }))
 
-const OPCOES_TRABALHO = PERFIS_TRABALHO.map((valor) => ({
-  valor,
-  label: LABEL_PERFIL_TRABALHO[valor],
+const OPCOES_TRABALHO = PERFIL_TRABALHO_OPTIONS.map((o) => ({
+  valor: o.value,
+  label: o.label,
 }))
 
 export function StepAtividadeFisica() {
   const { register, control, formState } = useFormContext<AnamneseFormValues>()
   const { errors } = formState
+  const e = errors.atividadeFisica
 
-  const pratica = useWatch({ control, name: "praticaAtividade" })
+  const pratica = useWatch({ control, name: "atividadeFisica.praticaAtividade" })
 
   return (
     <div className="flex flex-col gap-8">
       <GrupoCampos titulo="Prática de exercícios">
         <Controller
           control={control}
-          name="praticaAtividade"
+          name="atividadeFisica.praticaAtividade"
           render={({ field }) => (
             <CampoSimNao
-              label="Você pratica atividade física?"
+              label="Você pratica atividade física atualmente?"
               valor={field.value}
               onChange={field.onChange}
               name="pratica-atividade"
@@ -57,18 +53,16 @@ export function StepAtividadeFisica() {
           )}
         />
 
-        {pratica === true ? (
+        {pratica === true && (
           <>
-            <Campo
-              label="Quais atividades?"
-              erro={errors.atividadesQuais?.message}
-            >
+            <Campo label="Quais atividades?" erro={e?.atividadesQuais?.message}>
               {(props) => (
                 <Textarea
                   {...props}
-                  {...register("atividadesQuais")}
+                  {...register("atividadeFisica.atividadesQuais")}
                   rows={2}
-                  placeholder="Ex.: musculação, corrida, natação"
+                  placeholder="Ex.: musculação, corrida, natação, yoga..."
+                  className="resize-none"
                 />
               )}
             </Campo>
@@ -76,12 +70,12 @@ export function StepAtividadeFisica() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Campo
                 label="Frequência semanal (dias)"
-                erro={errors.frequenciaSemanal?.message}
+                erro={e?.frequenciaSemanal?.message}
               >
                 {(props) => (
                   <Input
                     {...props}
-                    {...register("frequenciaSemanal")}
+                    {...register("atividadeFisica.frequenciaSemanal")}
                     type="number"
                     inputMode="numeric"
                     min={0}
@@ -92,13 +86,13 @@ export function StepAtividadeFisica() {
               </Campo>
 
               <Campo
-                label="Duração média (min/sessão)"
-                erro={errors.duracaoSessao?.message}
+                label="Duração média por sessão (min)"
+                erro={e?.duracaoSessao?.message}
               >
                 {(props) => (
                   <Input
                     {...props}
-                    {...register("duracaoSessao")}
+                    {...register("atividadeFisica.duracaoSessao")}
                     type="number"
                     inputMode="numeric"
                     min={0}
@@ -109,15 +103,15 @@ export function StepAtividadeFisica() {
               </Campo>
             </div>
 
-            <Campo label="Intensidade percebida" erro={errors.intensidade?.message}>
+            <Campo label="Intensidade percebida" erro={e?.intensidade?.message}>
               {() => (
                 <Controller
                   control={control}
-                  name="intensidade"
+                  name="atividadeFisica.intensidade"
                   render={({ field }) => (
                     <RadioCards
                       opcoes={OPCOES_INTENSIDADE}
-                      valor={field.value}
+                      valor={field.value ?? ""}
                       onChange={field.onChange}
                       name="intensidade"
                       ariaLabel="Intensidade percebida"
@@ -128,35 +122,32 @@ export function StepAtividadeFisica() {
               )}
             </Campo>
 
-            <Campo
-              label="Há quanto tempo pratica"
-              erro={errors.tempoPratica?.message}
-            >
+            <Campo label="Há quanto tempo pratica" erro={e?.tempoPratica?.message}>
               {(props) => (
                 <Input
                   {...props}
-                  {...register("tempoPratica")}
+                  {...register("atividadeFisica.tempoPratica")}
                   placeholder="Ex.: 2 anos"
                 />
               )}
             </Campo>
           </>
-        ) : null}
+        )}
       </GrupoCampos>
 
       <GrupoCampos titulo="Esforço no trabalho">
         <Campo
           label="Seu trabalho é predominantemente"
-          erro={errors.perfilTrabalho?.message}
+          erro={e?.perfilTrabalho?.message}
         >
           {() => (
             <Controller
               control={control}
-              name="perfilTrabalho"
+              name="atividadeFisica.perfilTrabalho"
               render={({ field }) => (
                 <RadioCards
                   opcoes={OPCOES_TRABALHO}
-                  valor={field.value}
+                  valor={field.value ?? ""}
                   onChange={field.onChange}
                   name="perfil-trabalho"
                   ariaLabel="Perfil de esforço no trabalho"
@@ -168,18 +159,18 @@ export function StepAtividadeFisica() {
       </GrupoCampos>
 
       <GrupoCampos
-        titulo="Fator de atividade"
-        descricao="Este é o multiplicador aplicado à sua taxa metabólica basal para estimar o gasto energético total. Considere exercícios e esforço no trabalho somados."
+        titulo="Fator de atividade geral"
+        descricao="Multiplicador aplicado à taxa metabólica basal. Considere exercícios e esforço no trabalho somados."
       >
         <Campo
           label="Nível de atividade física geral"
           obrigatorio
-          erro={errors.nivelAtividade?.message}
+          erro={e?.nivelAtividade?.message}
         >
           {() => (
             <Controller
               control={control}
-              name="nivelAtividade"
+              name="atividadeFisica.nivelAtividade"
               render={({ field }) => (
                 <RadioCards
                   opcoes={OPCOES_NIVEL}

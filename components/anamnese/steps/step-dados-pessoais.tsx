@@ -4,27 +4,26 @@ import { Controller, useFormContext } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Campo, GrupoCampos } from "../form-field"
 import { RadioCards } from "../option-cards"
-import { SEXOS } from "@/lib/nutrition/constants"
-import { LABEL_SEXO } from "@/lib/nutrition/labels"
 import type { AnamneseFormValues } from "@/lib/nutrition/schema"
 
-const OPCOES_SEXO = SEXOS.map((valor) => ({
-  valor,
-  label: LABEL_SEXO[valor],
-}))
+const OPCOES_SEXO = [
+  { valor: "feminino" as const, label: "Feminino" },
+  { valor: "masculino" as const, label: "Masculino" },
+]
 
 export function StepDadosPessoais() {
   const { register, control, formState } = useFormContext<AnamneseFormValues>()
   const { errors } = formState
+  const e = errors.dadosPessoais
 
   return (
     <div className="flex flex-col gap-8">
       <GrupoCampos titulo="Identificação">
-        <Campo label="Nome completo" obrigatorio erro={errors.nome?.message}>
+        <Campo label="Nome completo" obrigatorio erro={e?.nome?.message}>
           {(props) => (
             <Input
               {...props}
-              {...register("nome")}
+              {...register("dadosPessoais.nome")}
               autoComplete="name"
               placeholder="Como você prefere ser chamado(a)"
             />
@@ -32,20 +31,21 @@ export function StepDadosPessoais() {
         </Campo>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <Campo
-            label="Data de nascimento"
-            erro={errors.dataNascimento?.message}
-          >
-            {(props) => (
-              <Input {...props} {...register("dataNascimento")} type="date" />
-            )}
-          </Campo>
-
-          <Campo label="Idade" obrigatorio erro={errors.idade?.message}>
+          <Campo label="Data de nascimento" erro={e?.dataNascimento?.message}>
             {(props) => (
               <Input
                 {...props}
-                {...register("idade")}
+                {...register("dadosPessoais.dataNascimento")}
+                type="date"
+              />
+            )}
+          </Campo>
+
+          <Campo label="Idade" obrigatorio erro={e?.idade?.message}>
+            {(props) => (
+              <Input
+                {...props}
+                {...register("dadosPessoais.idade")}
                 type="number"
                 inputMode="numeric"
                 min={10}
@@ -59,13 +59,13 @@ export function StepDadosPessoais() {
         <Campo
           label="Sexo biológico"
           obrigatorio
-          erro={errors.sexo?.message}
+          erro={e?.sexo?.message}
           dica="Usado apenas para selecionar a equação correta de taxa metabólica basal."
         >
           {() => (
             <Controller
               control={control}
-              name="sexo"
+              name="dadosPessoais.sexo"
               render={({ field }) => (
                 <RadioCards
                   opcoes={OPCOES_SEXO}
@@ -86,24 +86,21 @@ export function StepDadosPessoais() {
         descricao="Informações opcionais que ajudam a interpretar sua rotina."
       >
         <div className="grid gap-4 sm:grid-cols-2">
-          <Campo label="Profissão" erro={errors.profissao?.message}>
+          <Campo label="Profissão" erro={e?.profissao?.message}>
             {(props) => (
               <Input
                 {...props}
-                {...register("profissao")}
+                {...register("dadosPessoais.profissao")}
                 placeholder="Ex.: Analista de sistemas"
               />
             )}
           </Campo>
 
-          <Campo
-            label="Carga horária de trabalho"
-            erro={errors.cargaHoraria?.message}
-          >
+          <Campo label="Carga horária de trabalho" erro={e?.cargaHoraria?.message}>
             {(props) => (
               <Input
                 {...props}
-                {...register("cargaHoraria")}
+                {...register("dadosPessoais.cargaHoraria")}
                 placeholder="Ex.: 40h por semana"
               />
             )}
@@ -112,24 +109,24 @@ export function StepDadosPessoais() {
 
         <Campo
           label="Telefone ou e-mail"
-          erro={errors.contato?.message}
+          erro={e?.contato?.message}
           dica="Fica apenas no seu navegador; nada é enviado ou armazenado em servidor."
         >
           {(props) => (
             <Input
               {...props}
-              {...register("contato")}
+              {...register("dadosPessoais.contato")}
               autoComplete="email"
               placeholder="seu@email.com"
             />
           )}
         </Campo>
 
-        <Campo label="Encaminhado por" erro={errors.encaminhadoPor?.message}>
+        <Campo label="Encaminhado por" erro={e?.encaminhadoPor?.message}>
           {(props) => (
             <Input
               {...props}
-              {...register("encaminhadoPor")}
+              {...register("dadosPessoais.encaminhadoPor")}
               placeholder="Profissional ou indicação, se houver"
             />
           )}
