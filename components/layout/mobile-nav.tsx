@@ -17,7 +17,7 @@ const LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/suporte", label: "Suporte" },
   { href: "/apoie", label: "Apoie" },
-  { href: "/entrar", label: "Entrar" },
+  { href: "/login", label: "Entrar" },
 ] as const
 
 export function MobileNav() {
