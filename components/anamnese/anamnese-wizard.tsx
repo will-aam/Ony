@@ -17,6 +17,7 @@ import type { Sexo, NivelAtividade, Biotipo, ObjetivoComposicao, ObjetivoPerform
 import {
   carregarRascunho,
   carregarEtapa,
+  limparRascunho,
   useFormPersistence,
 } from "@/lib/nutrition/form-persistence"
 

@@ -1,20 +1,10 @@
 import type {
   Biotipo,
-  ConsumoAlcool,
   FormulaCalculavel,
   FormulaSelecionavel,
-  Frequencia,
-  GrupoAlimentar,
-  Intensidade,
   NivelAtividade,
-  NivelEstresse,
   ObjetivoComposicao,
-  ObjetivoConsulta,
   ObjetivoPerformance,
-  PerfilTrabalho,
-  PreparadorRefeicao,
-  Qualidade,
-  Refeicao,
   Sexo,
 } from "./constants"
 
@@ -80,7 +70,7 @@ export const LABEL_OBJETIVO_PERFORMANCE: Record<ObjetivoPerformance, string> = {
   flexibilidade: "Melhorar a flexibilidade",
 }
 
-export const LABEL_OBJETIVO_CONSULTA: Record<ObjetivoConsulta, string> = {
+export const LABEL_OBJETIVO_CONSULTA: Record<string, string> = {
   emagrecimento: "Emagrecimento",
   "ganho-massa": "Ganho de massa muscular",
   manutencao: "Manutenção de peso",
@@ -90,44 +80,40 @@ export const LABEL_OBJETIVO_CONSULTA: Record<ObjetivoConsulta, string> = {
   outro: "Outro",
 }
 
-export const LABEL_INTENSIDADE: Record<Intensidade, string> = {
+export const LABEL_INTENSIDADE: Record<string, string> = {
   leve: "Leve",
   moderada: "Moderada",
   intensa: "Intensa",
 }
 
-export const LABEL_PERFIL_TRABALHO: Record<PerfilTrabalho, string> = {
+export const LABEL_PERFIL_TRABALHO: Record<string, string> = {
   sedentario: "Predominantemente sentado",
   ativo: "Ativo / em pé",
   "esforco-intenso": "Esforço físico intenso",
 }
 
-export const LABEL_QUALIDADE: Record<Qualidade, string> = {
+export const LABEL_QUALIDADE: Record<string, string> = {
   boa: "Boa",
   regular: "Regular",
   ruim: "Ruim",
 }
 
-export const LABEL_ESTRESSE: Record<NivelEstresse, string> = {
+export const LABEL_ESTRESSE: Record<string, string> = {
   baixo: "Baixo",
   moderado: "Moderado",
   alto: "Alto",
 }
 
-export const LABEL_ALCOOL: Record<ConsumoAlcool, string> = {
-  nao: "Não consumo",
-  socialmente: "Socialmente",
-  frequente: "Frequente",
-}
 
-export const LABEL_PREPARADOR: Record<PreparadorRefeicao, string> = {
+
+export const LABEL_PREPARADOR: Record<string, string> = {
   proprio: "Eu mesmo(a)",
   familiar: "Familiar",
   marmita: "Comida pronta / marmita",
   restaurante: "Restaurante",
 }
 
-export const LABEL_FREQUENCIA: Record<Frequencia, string> = {
+export const LABEL_FREQUENCIA: Record<string, string> = {
   nunca: "Nunca",
   "1-2x": "1-2x",
   "3-4x": "3-4x",
@@ -135,7 +121,7 @@ export const LABEL_FREQUENCIA: Record<Frequencia, string> = {
   diario: "Diário",
 }
 
-export const LABEL_REFEICAO: Record<Refeicao, string> = {
+export const LABEL_REFEICAO: Record<string, string> = {
   "cafe-manha": "Café da manhã",
   "lanche-manha": "Lanche da manhã",
   almoco: "Almoço",
@@ -144,7 +130,7 @@ export const LABEL_REFEICAO: Record<Refeicao, string> = {
   ceia: "Ceia",
 }
 
-export const LABEL_GRUPO_ALIMENTAR: Record<GrupoAlimentar, string> = {
+export const LABEL_GRUPO_ALIMENTAR: Record<string, string> = {
   frutas: "Frutas",
   verduras: "Verduras e legumes",
   "carnes-vermelhas": "Carnes vermelhas",
