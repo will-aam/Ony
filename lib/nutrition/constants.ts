@@ -156,12 +156,13 @@ export const QUALIDADE_SONO_OPTIONS: SelectOption[] = [
 ]
 
 export const HABITOS_INTESTINAIS_OPTIONS: SelectOption[] = [
-  { value: "normal", label: "Normal (1–2x/dia)" },
-  { value: "prisao-de-ventre", label: "Prisão de ventre" },
-  { value: "diarreia", label: "Diarreia frequente" },
-  { value: "alternado", label: "Alternado (prisão e diarreia)" },
-  { value: "gases", label: "Gases / distensão" },
-  { value: "outros", label: "Outros" },
+  { value: "bristol-1", label: "Tipo 1 (Caroços duros separados)" },
+  { value: "bristol-2", label: "Tipo 2 (Em forma de salsicha, grumoso)" },
+  { value: "bristol-3", label: "Tipo 3 (Em formato de salsicha, com rachaduras)" },
+  { value: "bristol-4", label: "Tipo 4 (Como salsicha ou cobra, liso e macio)" },
+  { value: "bristol-5", label: "Tipo 5 (Pedaços macios com bordas nítidas)" },
+  { value: "bristol-6", label: "Tipo 6 (Pedaços fofos com bordas irregulares)" },
+  { value: "bristol-7", label: "Tipo 7 (Aquoso, sem pedaços sólidos)" },
 ]
 
 export const REFEICOES_DIA_OPTIONS: SelectOption[] = [

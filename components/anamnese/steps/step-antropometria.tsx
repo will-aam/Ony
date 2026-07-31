@@ -11,6 +11,7 @@ import {
 import { Campo, GrupoCampos } from "../form-field"
 import { BiotipoCards } from "../option-cards"
 import { TesteDoPulso } from "../teste-do-pulso"
+import { PesoIdealInfo } from "../peso-ideal-info"
 import { BIOTIPOS } from "@/lib/nutrition/constants"
 import { DESCRICAO_BIOTIPO, LABEL_BIOTIPO } from "@/lib/nutrition/labels"
 import { calcularImc, classificarImc } from "@/lib/nutrition/calculations"
@@ -116,6 +117,8 @@ export function StepAntropometria() {
             <span className="text-muted-foreground">{classificarImc(imc)}</span>
           </p>
         ) : null}
+
+        <PesoIdealInfo />
       </GrupoCampos>
 
       <GrupoCampos

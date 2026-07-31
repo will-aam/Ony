@@ -101,7 +101,7 @@ export function StepHistoricoAlimentar() {
         </Campo>
       </GrupoCampos>
 
-      <GrupoCampos titulo="Suplementação">
+      <GrupoCampos titulo="Quais suplementos você usa atualmente?">
         <Controller
           control={control}
           name="historicoAlimentar.suplementos"

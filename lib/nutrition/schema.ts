@@ -45,13 +45,16 @@ export const dadosPessoaisSchema = z.object({
   cargaHoraria: strOpt,
   contato: strOpt,
   encaminhadoPor: strOpt,
+  consentimentoLgpd: z.boolean().refine((val) => val === true, {
+    message: "O consentimento para o tratamento de dados de saúde é obrigatório.",
+  }),
 })
 
 // ─── Etapa 2 – Queixa ────────────────────────────────────────────────────────
 export const queixaSchema = z.object({
   motivoConsulta: strOpt,
   objetivoConsulta: z.string().optional(),
-  metaPrazo: strOpt,
+  prazoMeses: numOpt(1, 120, "meses"),
 })
 
 // ─── Etapa 3 – Histórico clínico ──────────────────────────────────────────────

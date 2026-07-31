@@ -202,6 +202,39 @@ export function classificarImc(imc: number): string {
   return "Obesidade grau III"
 }
 
+/**
+ * Faixa de peso ideal pela OMS/IMC (IMC entre 18,5 e 24,9).
+ * Retorna [pesoMin, pesoMax] em kg, com 1 casa decimal.
+ */
+export function calcularPesoIdealImc(
+  alturaCm: number
+): { min: number; max: number } {
+  const alturaM = alturaCm / 100
+  const alturaM2 = alturaM * alturaM
+  return {
+    min: Math.round(18.5 * alturaM2 * 10) / 10,
+    max: Math.round(24.9 * alturaM2 * 10) / 10,
+  }
+}
+
+/**
+ * Peso ideal pela fórmula de Lorentz (amplamente usada na nutrição clínica brasileira).
+ * Homens: PI = h - 100 - (h - 150) / 4
+ * Mulheres: PI = h - 100 - (h - 150) / 2
+ * Onde h é a altura em cm.
+ */
+export function calcularPesoIdealLorentz(
+  alturaCm: number,
+  sexo: "masculino" | "feminino"
+): number {
+  const pi =
+    sexo === "masculino"
+      ? alturaCm - 100 - (alturaCm - 150) / 4
+      : alturaCm - 100 - (alturaCm - 150) / 2
+  return Math.round(pi * 10) / 10
+}
+
+
 /* ── Macronutrientes ─────────────────────────────────────────────────── */
 
 /**

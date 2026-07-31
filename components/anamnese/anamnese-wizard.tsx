@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { ChevronLeft, ChevronRight, CheckCircle2, Loader2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, CheckCircle2, FileDown, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 import { anamneseSchema, STEP_SCHEMAS, type AnamneseFormValues } from "@/lib/nutrition/schema"
@@ -14,6 +14,11 @@ import { VALORES_INICIAIS } from "@/lib/nutrition/defaults"
 import { STEPS, TOTAL_STEPS, type StepId } from "@/lib/nutrition/steps"
 import { paraSearchParams } from "@/lib/nutrition/serialization"
 import type { Sexo, NivelAtividade, Biotipo, ObjetivoComposicao, ObjetivoPerformance, FormulaSelecionavel } from "@/lib/nutrition/constants"
+import {
+  carregarRascunho,
+  carregarEtapa,
+  useFormPersistence,
+} from "@/lib/nutrition/form-persistence"
 
 import { StepDadosPessoais } from "./steps/step-dados-pessoais"
 import { StepQueixa } from "./steps/step-queixa"
@@ -39,16 +44,35 @@ const STEP_COMPONENTS: Record<StepId, React.ComponentType> = {
 
 export function AnamneseWizard() {
   const router = useRouter()
+  // Sempre começa em 0 no servidor e no cliente (evita hydration mismatch).
+  // O valor salvo é restaurado no useEffect abaixo, após a hidratação.
   const [stepIndex, setStepIndex] = useState(0)
   const [enviando, setEnviando] = useState(false)
+  const [rascunhoRestaurado, setRascunhoRestaurado] = useState(false)
 
-  const stepAtual = STEPS[stepIndex]
+  const stepAtual = STEPS[Math.min(stepIndex, TOTAL_STEPS - 1)]!
 
   const methods = useForm<AnamneseFormValues>({
     resolver: zodResolver(anamneseSchema),
     defaultValues: VALORES_INICIAIS,
     mode: "onTouched",
   })
+
+  // Restaura etapa e valores do rascunho após a hidratação (client-only)
+  useEffect(() => {
+    const etapaSalva = carregarEtapa()
+    if (etapaSalva > 0) setStepIndex(etapaSalva)
+
+    const rascunho = carregarRascunho()
+    if (rascunho) {
+      methods.reset(rascunho, { keepDefaultValues: false })
+      setRascunhoRestaurado(true)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Auto-save: persiste valores e etapa no localStorage
+  useFormPersistence(methods, stepIndex)
 
   const { trigger, getValues, formState: { errors } } = methods
 
@@ -121,6 +145,30 @@ export function AnamneseWizard() {
   return (
     <FormProvider {...methods}>
       <div className="mx-auto max-w-2xl px-4 py-8 sm:py-12">
+        {/* Banner: rascunho restaurado */}
+        {rascunhoRestaurado && (
+          <div
+            role="status"
+            className="mb-6 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm"
+          >
+            <span className="text-muted-foreground">
+              Seus dados anteriores foram restaurados automaticamente.
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                limparRascunho()
+                methods.reset(VALORES_INICIAIS)
+                setStepIndex(0)
+                setRascunhoRestaurado(false)
+              }}
+              className="ml-4 shrink-0 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors"
+            >
+              Começar do zero
+            </button>
+          </div>
+        )}
+
         {/* Cabeçalho do wizard */}
         <div className="mb-8 flex flex-col gap-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -211,28 +259,30 @@ export function AnamneseWizard() {
               Voltar
             </Button>
 
-            <Button
-              type="submit"
-              disabled={enviando}
-              className="min-w-[140px] gap-1.5"
-            >
-              {enviando ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Calculando...
-                </>
-              ) : ehUltimaEtapa ? (
-                <>
-                  <CheckCircle2 className="h-4 w-4" />
-                  Ver resultado
-                </>
-              ) : (
-                <>
-                  Próximo
-                  <ChevronRight className="h-4 w-4" />
-                </>
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="submit"
+                disabled={enviando}
+                className="min-w-[140px] gap-1.5"
+              >
+                {enviando ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Calculando...
+                  </>
+                ) : ehUltimaEtapa ? (
+                  <>
+                    <CheckCircle2 className="h-4 w-4" />
+                    Ver resultado
+                  </>
+                ) : (
+                  <>
+                    Próximo
+                    <ChevronRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </div>

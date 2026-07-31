@@ -64,6 +64,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       className={`bg-background ${nunito.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-dvh font-sans antialiased">
         <TooltipProvider delayDuration={200}>

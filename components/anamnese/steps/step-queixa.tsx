@@ -56,12 +56,14 @@ export function StepQueixa() {
           )}
         </Campo>
 
-        <Campo label="Prazo ou meta específica" erro={e?.metaPrazo?.message}>
+        <Campo label="Prazo desejado para o objetivo" erro={e?.prazoMeses?.message}>
           {(props) => (
             <Input
               {...props}
-              {...register("queixa.metaPrazo")}
-              placeholder="Ex.: perder 10 kg em 6 meses, melhorar resistência em 3 meses..."
+              {...register("queixa.prazoMeses")}
+              type="number"
+              inputMode="numeric"
+              placeholder="Ex.: 3 (meses)"
             />
           )}
         </Campo>

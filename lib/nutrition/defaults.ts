@@ -10,11 +10,12 @@ export const VALORES_INICIAIS: AnamneseFormValues = {
     cargaHoraria: "",
     contato: "",
     encaminhadoPor: "",
+    consentimentoLgpd: false as unknown as true,
   },
   queixa: {
     motivoConsulta: "",
     objetivoConsulta: "",
-    metaPrazo: "",
+    prazoMeses: "",
   },
   historicoClinico: {
     doencasDiagnosticadas: "",

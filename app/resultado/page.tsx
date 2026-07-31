@@ -5,6 +5,7 @@ import { ArrowLeft, RefreshCcw } from "lucide-react"
 import { deSearchParams } from "@/lib/nutrition/serialization"
 import { calcularPlanoNutricional } from "@/lib/nutrition/calculations"
 import { ResultadoCards } from "@/components/resultado/resultado-cards"
+import { ResultadoAcoes } from "@/components/resultado/resultado-acoes"
 
 export const metadata: Metadata = {
   title: "Resultado Nutricional | Ony",
@@ -58,12 +59,7 @@ export default async function ResultadoPage({ searchParams }: PageProps) {
             Com base nas informações da sua ficha de anamnese.
           </p>
         </div>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/anamnese">
-            <ArrowLeft className="h-4 w-4 mr-1.5" />
-            Nova ficha
-          </Link>
-        </Button>
+        <ResultadoAcoes />
       </div>
 
       <ResultadoCards resultado={resultado} nome={nome} />

@@ -2,6 +2,8 @@
 
 import { Controller, useFormContext } from "react-hook-form"
 import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 import { Campo, GrupoCampos } from "../form-field"
 import { RadioCards } from "../option-cards"
 import type { AnamneseFormValues } from "@/lib/nutrition/schema"
@@ -131,6 +133,43 @@ export function StepDadosPessoais() {
             />
           )}
         </Campo>
+      </GrupoCampos>
+
+      <GrupoCampos titulo="Privacidade e Dados">
+        <Controller
+          control={control}
+          name="dadosPessoais.consentimentoLgpd"
+          render={({ field }) => (
+            <div className="flex flex-col gap-2 rounded-lg border border-border bg-muted/40 p-4">
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="consentimentoLgpd"
+                  checked={field.value === true}
+                  onCheckedChange={field.onChange}
+                  className="mt-0.5"
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <Label
+                    htmlFor="consentimentoLgpd"
+                    className="font-semibold text-sm cursor-pointer"
+                  >
+                    Consentimento de Dados (LGPD)
+                  </Label>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Compreendo que este formulário coleta dados sensíveis de saúde para fins exclusivos de avaliação nutricional. 
+                    Nenhum dado é armazenado em banco de dados ou servidor externo; as informações permanecem apenas no meu navegador 
+                    (através de cookies) até que o rascunho seja limpo. Ao prosseguir, concordo com este processamento local.
+                  </p>
+                </div>
+              </div>
+              {e?.consentimentoLgpd?.message && (
+                <p className="text-sm font-medium text-destructive mt-1 ml-7">
+                  {e.consentimentoLgpd.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
       </GrupoCampos>
     </div>
   )
