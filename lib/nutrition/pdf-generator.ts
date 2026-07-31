@@ -141,9 +141,10 @@ function gerarHtml(dados: AnamneseFormValues): string {
           ${campo("Gordura", `${resultado.macros.gordura.gramas}g — ${resultado.macros.gordura.percentual}%`)}
         </div>
 
-        <div style="margin-top: 16px; padding: 12px; background: #fff; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 9pt;">
-          <strong style="color: #475569;">Fórmula utilizada:</strong> ${formulaNome}${resultado.formulaFoiAutomatica ? " (Automática)" : ""}<br/>
-          <span style="color: #64748b;">${resultado.justificativa}</span>
+        <div style="margin-top: 12px; padding: 12px; background: #f8fafc; border-radius: 4px; border: 1px dashed #cbd5e1; font-size: 9pt;">
+          <strong style="color: #334155;">Base de cálculo:</strong> ${formulaNome}${resultado.formulaFoiAutomatica ? " (Automática)" : ""}<br/>
+          <span style="color: #64748b;">${resultado.justificativa}</span><br/>
+          <strong style="color: #475569; display: inline-block; margin-top: 6px;">📌 Nota clínica:</strong> <span style="color: #64748b;">Revisar a cada 2-4 semanas com nova pesagem (o metabolismo basal evolui com a composição corporal).</span>
         </div>
         `
 
@@ -197,7 +198,8 @@ function gerarHtml(dados: AnamneseFormValues): string {
 
     // Regex para checar inconsistência de prazo no texto livre
     if (q.motivoConsulta && !q.prazoMeses) {
-      const matchPrazo = q.motivoConsulta.match(/\d+\s*(meses|mês|semanas|semana|dias|dia|anos|ano)/i)
+      // Captura tanto dígitos quanto números por extenso até 12
+      const matchPrazo = q.motivoConsulta.match(/(\d+|um|dois|três|tres|quatro|cinco|seis|sete|oito|nove|dez|onze|doze)\s*(meses|mês|semanas|semana|dias|dia|anos|ano)/i)
       if (matchPrazo) {
         alertas.push(`ℹ️ <strong>Dado inconsistente:</strong> O paciente mencionou um prazo no texto livre ("${matchPrazo[0]}") mas não preencheu o campo estruturado de prazo. Confirmar com o paciente para cálculos precisos.`)
       }
